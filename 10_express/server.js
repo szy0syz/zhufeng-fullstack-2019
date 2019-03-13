@@ -6,6 +6,13 @@ app.get('/', function (req, res) {
   res.end('hello jerry.');
 })
 
+// 路由参数： [id, name]  [44, jerry]
+// /user/:id/:name this.$route.params
+
+app.get('/user/:id/:name', function(req, res) {
+  res.end(JSON.stringify(req.params));
+})
+
 app.post('/login', function(req, res) {
   res.end('登录成功');
 })
