@@ -1,33 +1,6 @@
-const fs = require('fs');
 const url = require('url');
 const http = require('http');
 const methods = require('methods');
-
-function innerMiddleware(req, res, next) {
-  const url = require('url');
-  const { query, pathname } = url.parse(req.url, true);
-  req.query = query;
-  req.path = pathname;
-  res.send = function(value) {
-    if (typeof value === 'object') {
-      res.setHeader('Content-Type', 'application/json;chatset=utf-8');
-      res.end(JSON.stringify(value));
-    } else if (typeof value === 'number') {
-      res.statusCode(value);
-      const status = require('_http_server').STATUS_CODES;
-      res.end(status[value]);
-    } else if (typeof value === 'string' || Buffer.isBuffer(value)) {
-      res.setHeader('Content-Type', 'text/html;chatset=utf-8');
-      res.end(value);
-    }
-  }
-  res.sendFile = function(p) {
-    // mime 处理文件类型
-    fs.createReadStream(p).pipe(res);
-  }
-
-  next();
-}
 
 function application() {
   let app = (req, res) => {
@@ -128,9 +101,6 @@ function application() {
     const server = http.createServer(app);
     server.listen(port, handler);
   }
-
-  // 内置中间件 放在app.routes的第一个位置，每次请求时都会先走这个中间件处理
-  app.use(innerMiddleware)
 
   return app;
 }
