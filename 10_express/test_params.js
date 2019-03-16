@@ -21,7 +21,8 @@ let reg = new RegExp(str)
 */
 // 我们已数组结构 只会结构前三项 /user/44/jerry, 44, jerry 而且我们还不要第一项
 let [ , ...lists] = real.match(reg) // 不要第一项的迭代
-
+console.log('args~~', args)
+console.log('lists~~', lists);
 // 这里就是把 args: {'id', 'name'} 换成一个带value的对象数组
 let result = args.reduce((memo, arg, index) => (memo[arg] = lists[index], memo), {});
 console.log(result)
